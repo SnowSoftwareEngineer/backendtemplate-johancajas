@@ -6,7 +6,7 @@
 <h3>API Test</h3>
 
 <div class="mb-2">
-    <button class="btn btn-primary me-2" @onclick="GetAll">Get All Forecasts</button>
+    <button class="btn btn-primary me-2" @onclick="CallApi">Call Weather API (GET all)</button>
     <input type="number" @bind="id" class="form-control d-inline-block" style="width:100px" />
     <button class="btn btn-secondary ms-2" @onclick="GetById">Get Forecast by ID</button>
     <button class="btn btn-success ms-2" @onclick="CreateSample">Create Sample Forecast (POST)</button>
@@ -27,7 +27,7 @@ else if (result != null)
     string? error;
     int id = 1;
 
-    async Task GetAll()
+    async Task CallApi()
     {
         try
         {
@@ -86,4 +86,10 @@ else if (result != null)
             error = ex.Message;
         }
     }
+
+
+
+
+
+
 }

@@ -46,5 +46,38 @@ namespace Back_EndAPI.Controllers
             Forecasts.Add(forecast);
             return CreatedAtAction(nameof(Get), new { id = forecast.Id }, forecast);
         }
+
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, WeatherForecast updated)
+        {
+            var existing = Forecasts.FirstOrDefault(f => f.Id == id);
+            if (existing == null) return NotFound();
+
+            // update fields
+            existing.Date = updated.Date;
+            existing.TemperatureC = updated.TemperatureC;
+            existing.Summary = updated.Summary;
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            var existing = Forecasts.FirstOrDefault(f => f.Id == id);
+            if (existing == null) return NotFound();
+
+            Forecasts.Remove(existing);
+            return NoContent();
+        }
+
+        [HttpGet("search")]
+        public ActionResult<IEnumerable<WeatherForecast>> Search([FromQuery] string summary)
+        {
+            if (string.IsNullOrWhiteSpace(summary)) return Ok(Forecasts);
+
+            var results = Forecasts.Where(f => !string.IsNullOrEmpty(f.Summary) && f.Summary.Contains(summary, StringComparison.OrdinalIgnoreCase));
+            return Ok(results);
+        }
     }
 }

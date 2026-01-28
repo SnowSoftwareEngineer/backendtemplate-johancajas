@@ -1,12 +1,14 @@
 
 using Front_EndAPI.Pages;
+using Microsoft.AspNetCore.Components;
+using System.Net.Http.Json;
 
 public class Page2Base : ComponentBase
 {
     [Inject]
     protected HttpClient Http { get; set; } = default!;
 
-    protected Page2? example;
+    protected ClassLibrary.Models.Example? example;
 
     protected override async Task OnInitializedAsync()
     {
@@ -15,6 +17,6 @@ public class Page2Base : ComponentBase
 
     protected async Task LoadExample()
     {
-        example = await Http.GetFromJsonAsync<Example>("Example/items") ?? new();
+        example = await Http.GetFromJsonAsync<ClassLibrary.Models.Example>("Example/items") ?? new ClassLibrary.Models.Example();
     }
 }
