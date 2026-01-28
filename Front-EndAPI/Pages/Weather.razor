@@ -1,0 +1,89 @@
+﻿
+@page "/weather"
+@inject HttpClient Http
+@using System.Net.Http.Json
+
+<h3>API Test</h3>
+
+<div class="mb-2">
+    <button class="btn btn-primary me-2" @onclick="GetAll">Get All Forecasts</button>
+    <input type="number" @bind="id" class="form-control d-inline-block" style="width:100px" />
+    <button class="btn btn-secondary ms-2" @onclick="GetById">Get Forecast by ID</button>
+    <button class="btn btn-success ms-2" @onclick="CreateSample">Create Sample Forecast (POST)</button>
+    <button class="btn btn-info ms-2" @onclick="CallExample">Call Example/items</button>
+</div>
+
+@if (error != null)
+{
+    <p style="color:red">@error</p>
+}
+else if (result != null)
+{
+    <pre>@result</pre>
+}
+
+@code {
+    string? result;
+    string? error;
+    int id = 1;
+
+    async Task GetAll()
+    {
+        try
+        {
+            result = await Http.GetStringAsync("WeatherForecast");
+            error = null;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+    async Task GetById()
+    {
+        try
+        {
+            result = await Http.GetStringAsync($"WeatherForecast/{id}");
+            error = null;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+    async Task CreateSample()
+    {
+        try
+        {
+            var sample = new
+            {
+                Date = DateTime.Now.AddDays(4),
+                TemperatureC = 30,
+                Summary = "Hot"
+            };
+
+            var resp = await Http.PostAsJsonAsync("WeatherForecast", sample);
+            result = await resp.Content.ReadAsStringAsync();
+            error = null;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+    async Task CallExample()
+    {
+        try
+        {
+            result = await Http.GetStringAsync("Example/items");
+            error = null;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+}
