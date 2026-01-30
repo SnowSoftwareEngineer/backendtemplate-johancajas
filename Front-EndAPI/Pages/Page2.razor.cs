@@ -109,7 +109,7 @@ public class Page2Base : ComponentBase
         editingId = 0;
         modalName = string.Empty;
         showModal = true;
-        error = null;
+        error = null; 
     }
 
     protected void OpenEditModal(TestItem item)
